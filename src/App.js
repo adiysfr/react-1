@@ -1,46 +1,61 @@
-import React, { Component } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
-import './App.css';
-import { ListCategories, NavbarComponent, Hasil } from './components';
-import { API_URL } from './utils/constant';
-import axios from 'axios';
+import React, { Component } from "react";
+import { Container, Col, Row } from "react-bootstrap";
+import "./App.css";
+import { ListCategories, NavbarComponent, Hasil, Menus } from "./components";
+import { API_URL } from "./utils/constant";
+import axios from "axios";
 
 export default class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      menus: []
-    }
+      menus: [],
+      categrorySelect: "",
+    };
   }
 
   componentDidMount() {
-    axios.get(API_URL + 'products')
-      .then(res => {
+    axios
+      .get(API_URL + "products?category.nama=" + this.state.categorySelect)
+      .then((res) => {
         const menus = res.data;
-        console.log(menus)
         this.setState({ menus });
       })
-      .catch(error => {
-        console.log(error)
-      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
+  changeCategory = (val) => {
+    this.setState({
+      categorySelect: val,
+      menu: [],
+    });
+    axios
+      .get(API_URL + "products?category.nama=" + val)
+      .then((res) => {
+        const menus = res.data;
+        this.setState({ menus });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   render() {
-    const {menus} = this.state
+    const { menus, categorySelect } = this.state;
     return (
       <div className="App">
         <NavbarComponent />
         <div className="mt-3">
           <Container fluid>
             <Row>
-              <ListCategories />
+              <ListCategories changeCategory={this.changeCategory} categorySelect={categorySelect} />
               <Col>
                 <strong>Daftar Produk</strong>
                 <hr />
                 <Row>
-                  {menus && menus.map((menu)=>(
-                    <h2>{menu.nama}</h2>
-                  ))}
+                  {menus &&
+                    menus.map((menu) => <Menus key={menu.id} menu={menu} />)}
                 </Row>
               </Col>
               <Hasil />
@@ -48,6 +63,6 @@ export default class App extends Component {
           </Container>
         </div>
       </div>
-    )
+    );
   }
 }
