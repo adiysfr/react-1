@@ -11,7 +11,7 @@ export default class App extends Component {
 
     this.state = {
       menus: [],
-      categrorySelect: "",
+      categrorySelect: "Makanan",
     };
   }
 
@@ -49,19 +49,24 @@ export default class App extends Component {
         <div className="mt-3">
           <Container fluid>
             <Row>
-              <ListCategories changeCategory={this.changeCategory} categorySelect={categorySelect} />
+              <ListCategories
+                changeCategory={this.changeCategory}
+                categorySelect={categorySelect}
+              />{" "}
               <Col>
-                <strong>Daftar Produk</strong>
-                <hr />
+                <strong> Daftar Produk </strong> <hr />
                 <Row>
+                  {" "}
                   {menus &&
-                    menus.map((menu) => <Menus key={menu.id} menu={menu} />)}
-                </Row>
-              </Col>
+                    menus.map((menu) => (
+                      <Menus key={menu.id} menu={menu} />
+                    ))}{" "}
+                </Row>{" "}
+              </Col>{" "}
               <Hasil />
-            </Row>
-          </Container>
-        </div>
+            </Row>{" "}
+          </Container>{" "}
+        </div>{" "}
       </div>
     );
   }
