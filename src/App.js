@@ -11,7 +11,7 @@ export default class App extends Component {
 
     this.state = {
       menus: [],
-      categrorySelect: "Makanan",
+      categorySelect: "Makanan",
     };
   }
 
